@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 700px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2E86C1;
+        }
+
+        input, select {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #2E86C1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2471A3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2E86C1;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Clinic Management System</h2>
+        <input type="text" id="patientName" placeholder="Patient Name" />
+        <input type="number" id="patientAge" placeholder="Age" />
+        <input type="text" id="patientContact" placeholder="Contact Number" />
+        <select id="appointmentType">
+            <option value="">Select Appointment Type</option>
+            <option value="General Checkup">General Checkup</option>
+            <option value="Dental Care">Dental Care</option>
+            <option value="Eye Checkup">Eye Checkup</option>
+            <option value="Skin Consultation">Skin Consultation</option>
+        </select>
+        <button onclick="addPatient()">Add Patient</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Contact</th>
+                    <th>Appointment Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="patientList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let patients = [];
+
+        function addPatient() {
+            const name = document.getElementById('patientName').value;
+            const age = document.getElementById('patientAge').value;
+            const contact = document.getElementById('patientContact').value;
+            const appointmentType = document.getElementById('appointmentType').value;
+
+            if (name === '' || age === '' || contact === '' || appointmentType === '') {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            const newPatient = { name, age, contact, appointmentType };
+            patients.push(newPatient);
+            renderPatients();
+
+            document.getElementById('patientName').value = '';
+            document.getElementById('patientAge').value = '';
+            document.getElementById('patientContact').value = '';
+            document.getElementById('appointmentType').value = '';
+        }
+
+        function renderPatients() {
+            const patientList = document.getElementById('patientList');
+            patientList.innerHTML = '';
+
+            patients.forEach((patient, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${patient.name}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.contact}</td>
+                    <td>${patient.appointmentType}</td>
+                    <td><button onclick="deletePatient(${index})">Delete</button></td>
+                `;
+                patientList.appendChild(row);
+            });
+        }
+
+        function deletePatient(index) {
+            patients.splice(index, 1);
+            renderPatients();
+        }
+    </script>
+</body>
+</html>

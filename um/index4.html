@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .weather-app {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .weather-info {
+            margin-top: 20px;
+        }
+
+        .weather-info h2 {
+            margin: 10px 0;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-app">
+        <h2>Weather App</h2>
+        <input type="text" id="cityInput" placeholder="Enter city name...">
+        <button onclick="getWeather()">Get Weather</button>
+        <div class="weather-info" id="weatherInfo"></div>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            const apiKey = '123abc456def789ghi'; // Your API key here
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+            if (city === '') {
+                alert('Please enter a city name.');
+                return;
+            }
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.cod === 200) {
+                    const weatherInfo = document.getElementById('weatherInfo');
+                    weatherInfo.innerHTML = `
+                        <h2>${data.name}, ${data.sys.country}</h2>
+                        <p>Temperature: ${data.main.temp} °C</p>
+                        <p>Weather: ${data.weather[0].description}</p>
+                        <p>Humidity: ${data.main.humidity}%</p>
+                        <p>Wind Speed: ${data.wind.speed} m/s</p>
+                    `;
+                } else {
+                    alert('City not found. Please enter a valid city name.');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again later.');
+            }
+        }
+    </script>
+</body>
+</html>

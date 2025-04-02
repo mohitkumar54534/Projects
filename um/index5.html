@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        input, select {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Gym Management System</h2>
+        <input type="text" id="name" placeholder="Member Name" />
+        <input type="number" id="age" placeholder="Age" />
+        <select id="membership">
+            <option value="">Select Membership Plan</option>
+            <option value="Monthly">Monthly - ₹500</option>
+            <option value="Quarterly">Quarterly - ₹1200</option>
+            <option value="Yearly">Yearly - ₹4000</option>
+        </select>
+        <button onclick="addMember()">Add Member</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Membership</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="memberList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let members = [];
+
+        function addMember() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const membership = document.getElementById('membership').value;
+
+            if (name === '' || age === '' || membership === '') {
+                alert('Please fill out all fields');
+                return;
+            }
+
+            const newMember = { name, age, membership };
+            members.push(newMember);
+            renderMembers();
+
+            document.getElementById('name').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('membership').value = '';
+        }
+
+        function renderMembers() {
+            const memberList = document.getElementById('memberList');
+            memberList.innerHTML = '';
+
+            members.forEach((member, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${member.name}</td>
+                    <td>${member.age}</td>
+                    <td>${member.membership}</td>
+                    <td><button onclick="deleteMember(${index})">Delete</button></td>
+                `;
+                memberList.appendChild(row);
+            });
+        }
+
+        function deleteMember(index) {
+            members.splice(index, 1);
+            renderMembers();
+        }
+    </script>
+</body>
+</html>
